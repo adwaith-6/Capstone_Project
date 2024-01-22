@@ -1,0 +1,223 @@
+{
+	"info": {
+		"_postman_id": "d447d93c-7c5b-4a1c-b76f-0985b59670ed",
+		"name": "FyAway",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31859064"
+	},
+	"item": [
+		{
+			"name": "LoginPage",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FA_URL}}/login",
+					"host": [
+						"{{FA_URL}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginAction",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{FA_URL}}/loginaction?email_id=Scott@gmail.com&pwd=Scott123",
+					"host": [
+						"{{FA_URL}}"
+					],
+					"path": [
+						"loginaction"
+					],
+					"query": [
+						{
+							"key": "email_id",
+							"value": "Scott@gmail.com"
+						},
+						{
+							"key": "pwd",
+							"value": "Scott123"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Home",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"FlyAway 2019\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FA_URL}}/home",
+					"host": [
+						"{{FA_URL}}"
+					],
+					"path": [
+						"home"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Search Flight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"AirAsia\");\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Get book id\", function(){\r",
+							"    const resp = cheerio.load(responseBody);\r",
+							"    resp(\"a[href^='book']\").attr('href');\r",
+							"    console.log(resp(\"a[href^='book']\").attr('href'));\r",
+							"\r",
+							"    pm.collectionVariables.set(\"flight_id\", resp(\"a[href^='book']\").attr('href'));\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FA_URL}}/home?source=1&destination=4",
+					"host": [
+						"{{FA_URL}}"
+					],
+					"path": [
+						"home"
+					],
+					"query": [
+						{
+							"key": "source",
+							"value": "1"
+						},
+						{
+							"key": "destination",
+							"value": "4"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Book Flight",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"confirm your flight\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FA_URL}}/{{flight_id}}",
+					"host": [
+						"{{FA_URL}}"
+					],
+					"path": [
+						"{{flight_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Confirm Booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Body matches string\", function () {\r",
+							"    pm.expect(pm.response.text()).to.include(\"has been booked\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{FA_URL}}/completepurchase",
+					"host": [
+						"{{FA_URL}}"
+					],
+					"path": [
+						"completepurchase"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "flight_id",
+			"value": ""
+		}
+	]
+}
